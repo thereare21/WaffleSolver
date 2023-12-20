@@ -112,6 +112,8 @@ public class WaffleImpl implements WaffleInterface {
     //  to differentiate the position between the two?
     //  Consider having Letters contain a Posn of where it's located
     //    Yeah there's more to keep track of but it might be for the better.
+    //    Sucks that we have to call this method basically knowing the position of the letter
+    //      In that case can we make this static, and not reliant on any specific letter then?
 
     Posn posnOfLetter = new Posn(0, 0);
     for (Map.Entry<Posn, Letter> entry : letterMap.entrySet()) {

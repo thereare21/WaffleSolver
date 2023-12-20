@@ -63,4 +63,18 @@ public class WaffleTests {
     System.out.println(waffle);
   }
 
+  @Test
+  public void testValidPlacementsMultipleSameYellowLetters() {
+    //from archive waffle #4
+    //TODO - currently getValidPlacementOfLetter does not have a way to differentiate between
+    //  yellow letters with the same character. fix the method such that it can differentiate.
+    WaffleInterface waffle = new WaffleImpl(
+            "ndeeyeeltraeckaidnsks", "gygygyyeeegeyyeygeyeg");
+    System.out.println(waffle);
+    List<Posn> validPlacements = waffle.getValidPlacementsOfLetter(new Letter('e', LetterState.YELLOW));
+    for (Posn p: validPlacements) {
+      System.out.println(p);
+    }
+  }
+
 }
