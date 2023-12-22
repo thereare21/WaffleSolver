@@ -56,7 +56,7 @@ public class WaffleTests {
   public void testValidPlacementsOfLetterWorks() {
     WaffleInterface waffle = new WaffleImpl(
             "speedatptocirnempeiey", "gggegeeyyegeyegegyyeg");
-    List<Posn> validPlacements = waffle.getValidPlacementsOfLetter(new Letter('i', LetterState.YELLOW));
+    List<Posn> validPlacements = waffle.getValidPlacementsOfLetter(new Letter('i', LetterState.YELLOW, new Posn(2, 4)));
     for (Posn p: validPlacements) {
       System.out.println(p);
     }
@@ -66,15 +66,28 @@ public class WaffleTests {
   @Test
   public void testValidPlacementsMultipleSameYellowLetters() {
     //from archive waffle #4
-    //TODO - currently getValidPlacementOfLetter does not have a way to differentiate between
-    //  yellow letters with the same character. fix the method such that it can differentiate.
     WaffleInterface waffle = new WaffleImpl(
             "ndeeyeeltraeckaidnsks", "gygygyyeeegeyyeygeyeg");
     System.out.println(waffle);
-    List<Posn> validPlacements = waffle.getValidPlacementsOfLetter(new Letter('e', LetterState.YELLOW));
+    List<Posn> validPlacements = waffle.getValidPlacementsOfLetter(new Letter('e', LetterState.YELLOW, new Posn(3, 0)));
     for (Posn p: validPlacements) {
       System.out.println(p);
     }
+  }
+
+  @Test
+  public void testGeneratePermutations() {
+    //tests if all permutations are generated given a list of characters
+    PermutationsTest.generateAllPermutations(new char[]{'a', 'b', 'c', 'd', 'e'});
+    //seems to work fine i guess
+  }
+
+  @Test
+  public void testLetterEquality() {
+    Letter l1 = new Letter('e', LetterState.YELLOW, new Posn(1, 0));
+    Letter l2 = new Letter('e', LetterState.YELLOW, new Posn(1, 0));
+
+    Assert.assertEquals(l1, l2);
   }
 
 }

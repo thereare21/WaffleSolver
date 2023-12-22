@@ -5,15 +5,18 @@ public class Letter {
 
   private final char letter;
   private final LetterState state;
+  private Posn position;
 
-  public Letter(char letter, LetterState state) {
+  public Letter(char letter, LetterState state, Posn position) {
     this.letter = letter;
     this.state = state;
+    this.position = position;
   }
 
   public Letter(Letter other) {
     this.letter = other.getLetter();
     this.state = other.getState();
+    this.position = other.position;
   }
 
   public char getLetter() {
@@ -24,16 +27,21 @@ public class Letter {
     return this.state;
   }
 
+  public Posn getPosition() {
+    return this.position;
+  }
+
   @Override
   public String toString() {
-    return letter + " " + state.name();
+    return letter + " " + state.name() + " " + this.position;
   }
 
   @Override
   public boolean equals(Object other) {
     if (other instanceof Letter) {
-      Letter otherPosn = (Letter) other;
-      return otherPosn.letter == this.letter && otherPosn.state == this.state;
+      Letter otherLetter = (Letter) other;
+      return otherLetter.letter == this.letter && otherLetter.state == this.state
+              && otherLetter.position.equals(this.position);
     } else {
       return false;
     }
@@ -41,6 +49,6 @@ public class Letter {
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.letter, this.state);
+    return Objects.hash(this.letter, this.state, this.position);
   }
 }

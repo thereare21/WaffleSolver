@@ -52,7 +52,7 @@ public class WaffleImpl implements WaffleInterface {
         default:
           throw new IllegalArgumentException("Cannot recognize the state in given state string");
       }
-      letterMap.put(new Posn(curX, curY), new Letter(curLetter, curState));
+      letterMap.put(new Posn(curX, curY), new Letter(curLetter, curState, new Posn(curX, curY)));
 
       //tick up curX and curY appropriately
       if (curX == 4) {
@@ -115,12 +115,12 @@ public class WaffleImpl implements WaffleInterface {
     //    Sucks that we have to call this method basically knowing the position of the letter
     //      In that case can we make this static, and not reliant on any specific letter then?
 
-    Posn posnOfLetter = new Posn(0, 0);
-    for (Map.Entry<Posn, Letter> entry : letterMap.entrySet()) {
-      if (letter.equals(entry.getValue())) {
-        posnOfLetter = entry.getKey();
-      }
+
+    Letter letterAt = letterMap.get(letter.getPosition());
+    if (!letterAt.equals(letter)) {
+      throw new IllegalArgumentException("Cannot find the given letter");
     }
+    Posn posnOfLetter = letter.getPosition();
 
     if (letter.getState() == LetterState.YELLOW) {
       List<Posn> toReturn = new ArrayList<>();
