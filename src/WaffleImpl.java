@@ -74,10 +74,34 @@ public class WaffleImpl implements WaffleInterface {
     }
   }
 
+  public WaffleImpl(WaffleInterface other) {
+    if (other == null) {
+      throw new IllegalArgumentException("Object to copy is null");
+    }
+    this.letterMap = new HashMap<>();
+    int curX = 0;
+    int curY = 0;
+    for (int i = 0; i < 21; i++) {
+      letterMap.put(new Posn(curX, curY), other.getLetterAt(new Posn(curX, curY)));
+
+      //tick up curX and curY appropriately
+      if (curX == 4) {
+        curX = 0;
+        curY++;
+      } else {
+        curX++;
+        //skips over the "odd" spaces (1, 1), (1, 3), etc. since those are empty spaces.
+        if (curX % 2 == 1 && curY % 2 == 1) {
+          curX++;
+        }
+      }
+    }
+
+  }
+
   @Override
   public Letter getLetterAt(Posn pos) {
     Letter toReturn = letterMap.get(pos);
-    System.out.println(toReturn);
     if (toReturn == null) {
       throw new IllegalArgumentException("Position doesn't exist in the waffle");
     }

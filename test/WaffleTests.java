@@ -90,4 +90,20 @@ public class WaffleTests {
     Assert.assertEquals(l1, l2);
   }
 
+  @Test
+  public void testWaffleCopyConstructorWorks() {
+    WaffleInterface waffle = new WaffleImpl(
+            "ndeeyeeltraeckaidnsks", "gygygyyeeegeyyeygeyeg");
+    WaffleImpl waffleCopy = new WaffleImpl(waffle);
+    Assert.assertEquals(waffleCopy.toString(), waffle.toString());
+  }
+
+  @Test
+  public void testWafflePermutationsWorks() {
+    WaffleInterface waffle = new WaffleImpl(
+            "ndeeyeeltraeckaidnsks", "gygygyyeeegeyyeygeyeg");
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolver(waffle);
+    waffleSolver.solveWaffle();
+  }
+
 }
