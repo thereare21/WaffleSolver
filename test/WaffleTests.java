@@ -106,4 +106,11 @@ public class WaffleTests {
     waffleSolver.solveWaffle();
   }
 
+  @Test
+  public void testWaffleSolverPositionsOfWordsWorks() {
+    WaffleInterface waffle = new WaffleImpl(
+            "ndeeyeeltraeckaidnsks", "gygygyyeeegeyyeygeyeg");
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+  }
+
 }
