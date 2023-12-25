@@ -111,6 +111,23 @@ public class WaffleTests {
     WaffleInterface waffle = new WaffleImpl(
             "ndeeyeeltraeckaidnsks", "gygygyyeeegeyyeygeyeg");
     WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testWaffleSolverFirstStepWorksTwo() {
+    WaffleInterface waffle = new WaffleImpl(
+            "speedatptocirnempeiey", "gggegeeyyegeyegegyyeg");
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testWaffleSolverFirstStepWorksThree() {
+    WaffleInterface waffle = new WaffleImpl(
+            "crmvperglaivyenbelouy", "ggeegeeyyegeyeeegeyeg");
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
   }
 
 }
