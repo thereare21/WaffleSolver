@@ -130,4 +130,12 @@ public class WaffleTests {
     waffleSolver.solveWaffle();
   }
 
+  @Test
+  public void testSniperLettersOneSniperLetter() {
+    WaffleInterface waffle = new WaffleImpl(
+            "aaxaaxxxxxxxxxxxxxbxx", "ggeggeeeeeeeeeeeeeyee");
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
 }
