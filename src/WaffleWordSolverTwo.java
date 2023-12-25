@@ -162,6 +162,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
           List<Optional<Letter>> permutationToBuild, List<Posn> allMovablePositions) {
     if (index == lockedLetters.size()) {
       //move on to the next step
+      generateYellowSniperPermutations(lockedLetters, sniperLetters, greyAndIffyLetters, new ArrayList<>(), 0, allMovablePositions);
       System.out.println("Permutation");
       for (Optional<Letter> letterOrEmpty : permutationToBuild) {
         if (letterOrEmpty.isPresent()) {
@@ -195,8 +196,17 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
 
   private void generateYellowSniperPermutations(List<Optional<Letter>> lockedLetters,
                                                 List<Letter> sniperLetters, List<Letter> greyAndIffyLetters,
-                                                List<Optional<Letter>> permutationToBuild) {
-
+                                                List<Optional<Letter>> permutationToBuild, int index,
+                                                List<Posn> allMovablePositions) {
+    if (index == sniperLetters.size()) {
+      //move on to next step
+    } else {
+      Letter curSniper = sniperLetters.get(index);
+      //if (wordPosns.get(1).getY() - wordPosns.get(0).getY() == 1)
+      //PROBLEM: multiple snipers can share the same spot that it can appear in.
+      //PROBLEM: how do you know the "sniping spot"? consider storing the data of the sniping spot
+      //of each sniper letter before passing it as an argument.
+    }
   }
 
 
