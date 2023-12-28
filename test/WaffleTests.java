@@ -131,9 +131,75 @@ public class WaffleTests {
   }
 
   @Test
+  public void testYellowLockedSwapped() {
+    WaffleInterface waffle = new WaffleImpl(
+            "axaxaxxxxxxxxxxxxxxxx", "gygygeeeeeeeeeeeeeeee");
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+
+  }
+
+  @Test
+  public void testYellowLockedOneYellowOneGrey() {
+    WaffleInterface waffle = new WaffleImpl(
+            "axaxaxxxxxxxxxxxxxxxx", "gygegeeeeeeeeeeeeeeee");
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testYellowLockedOneYellowTwoGrey() {
+    WaffleInterface waffle = new WaffleImpl(
+            "xxbxcxxxxxxxxxxxxxxxx", "eegygeeeeeeeeeeeeeeee");
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testYellowLockedOneYellowFourGrey() {
+    WaffleInterface waffle = new WaffleImpl(
+            "xbxxxxxxxxxxxxxxxxxxx", "eyeeeeeeeeeeeeeeeeeee");
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+
+  @Test
   public void testSniperLettersOneSniperLetter() {
     WaffleInterface waffle = new WaffleImpl(
             "aaxaaxxxxxxxxxxxxxbxx", "ggeggeeeeeeeeeeeeeyee");
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testSniperLettersTwoSniperLettersSameSpot() {
+    WaffleInterface waffle = new WaffleImpl(
+            "aaxaaxxxxxxxxxcxxxbxx", "ggeggeeeeeeeeeyeeeyee");
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testSniperLettersTwoSniperLettersDifferentSpots() {
+    WaffleInterface waffle = new WaffleImpl(
+            "xaxaxcxdxxxxxxxxxxbxx", "egegeyeyeeeeeeeeeeyee");
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+
+  }
+
+  @Test
+  public void testSniperLettersAndLockedLetterCombo() {
+    WaffleInterface waffle = new WaffleImpl(
+            "xxxaxcxdxxxxxxxxxxbxx", "eyegeyeyeeeeeeeeeeyee");
+    System.out.println(waffle);
     WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
     waffleSolver.solveWaffle();
   }
