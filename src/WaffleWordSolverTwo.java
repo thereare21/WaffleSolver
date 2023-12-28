@@ -180,6 +180,22 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
   }
 
 
+  /**
+   * Step 1 in generated all permutations of a word. Iterates through all possible placements of
+   * "locked letters", or yellow letters that MUST appear in the word.
+   * @param lockedLetters - a list of all locked letter, or an optional empty.
+   * @param lockedUsed - a list of boolean denoting which "letters" have been used already.
+   * @param index - the current index to place an item.
+   * @param sniperLetters - a list of all sniper letters. will not be used in this step, but will
+   *                      be passed along to future steps.
+   * @param sniperSpots - a list of all sniper spots, corresponding to
+   * @param greyAndIffyLetters - all "grey" and "iffy" letters. this won't be used in this method,
+   *                           but it will be used as a way to pass onto subsequent steps.
+   * @param permutationToBuild - a list of the permutation that, by the end of the recursion, will
+   *                           build the permutation needed to move to the next step.
+   * @param allMovablePositions - a list of Posn that cooresponds to the positions the items in the
+   *                            permutation list will eventually be placed.
+   */
   private void generateYellowLockedPermutations(
           List<Optional<Letter>> lockedLetters, List<Boolean> lockedUsed, int index,
           List<Letter> sniperLetters,
@@ -206,7 +222,6 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
       System.out.println();
 
       //generate sniper permutations based on the chosen permutation
-
       generateYellowSniperPermutations(lockedLetters, sniperLetters, sniperSpots, sniperUsed, new ArrayList<>(),
               greyAndIffyLetters, permutationToBuild, 0, allMovablePositions);
 
@@ -251,6 +266,18 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
     }
   }
 
+  /**
+   * TODO
+   * @param lockedLetters
+   * @param sniperLetters
+   * @param sniperSpots
+   * @param used
+   * @param usedSniperSpots
+   * @param greyAndIffyLetters
+   * @param permutationToBuild
+   * @param index
+   * @param allMovablePositions
+   */
   private void generateYellowSniperPermutations(List<Optional<Letter>> lockedLetters,
                                                 List<Letter> sniperLetters, List<Posn> sniperSpots,
                                                 List<Boolean> used,
