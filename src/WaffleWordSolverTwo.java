@@ -99,7 +99,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
           // call fillWord(wordNumber + 1, lettersUnused, new WaffleImpl(waffleCopy)
           // add used letters back to lettersUnused
       List<Posn> allMovablePositions = positionsOfWords.get(wordNumber)
-              .stream().map(waffle::getLetterAt).filter(letter -> letter.getState() != LetterState.GREEN)
+              .stream().map(waffleCopy::getLetterAt).filter(letter -> letter.getState() != LetterState.GREEN)
               .map(Letter::getPosition).collect(Collectors.toList());
 
       //sorting all letters into 3 categories: sniper letters, locked letters, grey letters, and
@@ -169,7 +169,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
       }
       System.out.println();
 
-      generateYellowLockedPermutations(lockedLetters, lockedUsed, 0,
+      generateYellowLockedPermutations(wordNumber, waffleCopy, lockedLetters, lockedUsed, 0,
               sniperLetters, sniperSpots, greyAndIffyLetters, new ArrayList<>(), allMovablePositions);
 
     }
@@ -194,6 +194,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
    *                            permutation list will eventually be placed.
    */
   private void generateYellowLockedPermutations(
+          int wordNumber, WaffleImpl waffleCopy,
           List<Optional<Letter>> lockedLetters, List<Boolean> lockedUsed, int index,
           List<Letter> sniperLetters,
           List<Posn> sniperSpots,
@@ -219,7 +220,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
       System.out.println();
 
       //generate sniper permutations based on the chosen permutation
-      generateYellowSniperPermutations(lockedLetters, sniperLetters, sniperSpots, sniperUsed, new ArrayList<>(),
+      generateYellowSniperPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters, sniperSpots, sniperUsed, new ArrayList<>(),
               greyAndIffyLetters, permutationToBuild, 0, allMovablePositions);
 
 
@@ -235,7 +236,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
             //recursively call this method with updated data
             lockedUsed.set(i, true); //set the letter to used
             permutationToBuild.add(letterOrEmpty); //add the letter to the permutation
-            generateYellowLockedPermutations(lockedLetters, lockedUsed, index + 1, sniperLetters, sniperSpots,
+            generateYellowLockedPermutations(wordNumber, waffleCopy, lockedLetters, lockedUsed, index + 1, sniperLetters, sniperSpots,
                     greyAndIffyLetters, permutationToBuild, allMovablePositions);
 
             //backtrack
@@ -248,7 +249,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
             //end up being the same permutations anyways.
 
             permutationToBuild.add(letterOrEmpty);
-            generateYellowLockedPermutations(lockedLetters, lockedUsed, index + 1,
+            generateYellowLockedPermutations(wordNumber, waffleCopy, lockedLetters, lockedUsed, index + 1,
                     sniperLetters, sniperSpots,
                     greyAndIffyLetters, permutationToBuild, allMovablePositions);
 
@@ -275,7 +276,8 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
    * @param index
    * @param allMovablePositions
    */
-  private void generateYellowSniperPermutations(List<Optional<Letter>> lockedLetters,
+  private void generateYellowSniperPermutations(int wordNumber, WaffleImpl waffleCopy,
+                                                List<Optional<Letter>> lockedLetters,
                                                 List<Letter> sniperLetters, List<Posn> sniperSpots,
                                                 List<Boolean> used,
                                                 List<Posn> usedSniperSpots,
@@ -311,7 +313,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
       //call next step
 
 
-      generateGreyAndIffyPermutations(lockedLetters, sniperLetters, greyAndIffyLetters,
+      generateGreyAndIffyPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters, greyAndIffyLetters,
               usedGreyIffy, permutationToBuild,
               emptyCount, 0, allMovablePositions);
 
@@ -340,7 +342,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
               used.set(i, true);
 
               //recursively call sniper permutation function
-              generateYellowSniperPermutations(lockedLetters, sniperLetters, sniperSpots,
+              generateYellowSniperPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters, sniperSpots,
                       used, usedSniperSpots, greyAndIffyLetters, permutationToBuild, index + 1,
                       allMovablePositions);
 
@@ -349,7 +351,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
               usedSniperSpots.remove(chosenSniperSpot);
 
               //recursively call sniper permutation function without the sniper spot being used
-              generateYellowSniperPermutations(lockedLetters, sniperLetters, sniperSpots,
+              generateYellowSniperPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters, sniperSpots,
                       used, usedSniperSpots, greyAndIffyLetters, permutationToBuild, index + 1,
                       allMovablePositions);
               used.set(i, false);
@@ -357,7 +359,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
               //if the sniper spot is filled by a yellow letter from a previous step, recursively
               //call without any changes in the permutation.
               used.set(i, true);
-              generateYellowSniperPermutations(lockedLetters, sniperLetters, sniperSpots,
+              generateYellowSniperPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters, sniperSpots,
                       used, usedSniperSpots, greyAndIffyLetters, permutationToBuild, index + 1,
                       allMovablePositions);
               used.set(i, false);
@@ -366,7 +368,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
             // if the sniper spot is already used, recursively call, but without any changes in the
             // permutation, just increment index by 1
             used.set(i, true);
-            generateYellowSniperPermutations(lockedLetters, sniperLetters, sniperSpots,
+            generateYellowSniperPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters, sniperSpots,
                     used, usedSniperSpots, greyAndIffyLetters, permutationToBuild, index + 1,
                     allMovablePositions);
             used.set(i, false);
@@ -376,7 +378,8 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
     }
   }
 
-  private void generateGreyAndIffyPermutations(List<Optional<Letter>> lockedLetters,
+  private void generateGreyAndIffyPermutations(int wordNumber, WaffleImpl waffleCopy,
+                                                List<Optional<Letter>> lockedLetters,
                                                List<Letter> sniperLetters,
                                                List<Letter> greyAndIffyLetters,
                                                List<Boolean> usedGreyIffy,
@@ -396,6 +399,11 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
         }
       }
       System.out.println();
+
+      //modifies data in the waffle copy and builds the word / verifies it is a valid word
+      buildWordFromPermutation(permutationToBuild, allMovablePosns, wordNumber, waffleCopy);
+
+
     } else {
       if (permutationToBuild.get(index).isEmpty()) {
         for (int i = 0; i < greyAndIffyLetters.size(); i++) {
@@ -405,7 +413,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
             Optional<Letter> oldLetterOrEmpty = permutationToBuild.get(index);
             permutationToBuild.set(index, Optional.of(chosenGreyIffy));
 
-            generateGreyAndIffyPermutations(lockedLetters, sniperLetters,
+            generateGreyAndIffyPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters,
                     greyAndIffyLetters, usedGreyIffy, permutationToBuild, emptyCount, index + 1, allMovablePosns);
 
             //backtrack
@@ -414,10 +422,35 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
           }
         }
       } else {
-        generateGreyAndIffyPermutations(lockedLetters, sniperLetters,
+        generateGreyAndIffyPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters,
                 greyAndIffyLetters, usedGreyIffy, permutationToBuild, emptyCount, index + 1, allMovablePosns);
       }
 
+    }
+  }
+
+  private void buildWordFromPermutation(List<Optional<Letter>> permutationToBuild,
+                                        List<Posn> allMovablePositions,
+                                        int wordNumber, WaffleImpl waffleCopy) {
+    for (int i = 0; i < permutationToBuild.size(); i++) {
+      if (permutationToBuild.get(i).isEmpty()) {
+        throw new IllegalStateException("Permutation cannot have any empty slots at this stage");
+      } else {
+        Letter letterAt = permutationToBuild.get(i).get();
+        waffleCopy.replaceLetter(allMovablePositions.get(i), letterAt);
+      }
+    }
+    List<Posn> wordPosns = positionsOfWords.get(wordNumber);
+    List<Letter> wordLetters = new ArrayList<>();
+    for (Posn p : wordPosns) {
+      wordLetters.add(waffleCopy.getLetterAt(p));
+    }
+    if (WordValidator.isValidWord(wordLetters)) {
+      System.out.println("Valid word: ");
+      for (Letter l : wordLetters) {
+        System.out.print(l + " ");
+      }
+      //recursively call fill word
     }
   }
 

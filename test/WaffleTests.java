@@ -204,4 +204,14 @@ public class WaffleTests {
     waffleSolver.solveWaffle();
   }
 
+  @Test
+  public void testValidWordCanBeFound() {
+    WaffleInterface waffle = new WaffleImpl(
+            "crvmperglaivyenbelouy", "ggeegeeyyegeyeeegeyeg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
 }

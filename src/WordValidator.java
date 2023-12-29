@@ -10,7 +10,7 @@ public class WordValidator {
     String word = letterList.stream().map(letter -> letter.getLetter()).map(String::valueOf)
             .collect(Collectors.joining());
 
-    String filePath = "AllFiveLetterWords.txt";
+    String filePath = "/Users/raymondtsai/Documents/JavaProjects/WaffleSolver/src/AllFiveLetterWords.txt";
 
     // Read and check each word from the file
     try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
