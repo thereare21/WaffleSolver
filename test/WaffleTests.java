@@ -218,6 +218,12 @@ public class WaffleTests {
   public void testWaffleArchiveOne() {
 
     //THIS HAS A SPECIAL EDGE CASE OF TWO E'S TURNING YELLOW AND VYING FOR THE SAME SPOT
+    //There are 2 yellow E's at (1, 4) and (2, 3), and it turns out both are suggesting the
+    //correct position at (2, 4). Once one E is placed there, the other yellow E turns grey.
+
+    //It will be tricky to account for this because there is no way to know for sure if
+    //that the correct position is indeed (2, 4) and only one of them needs to be in that position.
+    //Will have to iterate through both scenarios somehow...
 
     WaffleInterface waffle = new WaffleImpl(
             "fbouegiulsoomgeloemna", "geeggeeegygyyeyegyyeg"
@@ -233,12 +239,66 @@ public class WaffleTests {
             "scgolnndindeeriuffare", "geeeggeyyggeyeyegeyyg"
     );
 
-    //ALSO HAS A SPECIAL EDGE CASE
+    //ALSO HAS A SPECIAL EDGE CASE *NEVERMIND
 
     System.out.println(waffle);
     WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
     waffleSolver.solveWaffle();
 
+  }
+
+  @Test
+  public void testWaffleArchiveSix() {
+    WaffleInterface waffle = new WaffleImpl(
+            "socoprtceatsentamfeoy", "gyyggyyeyegeeeeygeyeg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+
+    //EDGE CASE: there could be 2 iffy letters that may appear as locked letters in the same word.
+    //  in this case, there were iffy letters in (2, 0) and (2, 4), and the solver attempted to
+    //  solve the word in row 0 and row 4 without using either iffy letter. Thus, the iffy letters
+    //  became locked in the column 2 word, and it ended up exceeding the movable positions.
+
+    //Would need to find a way to either detect this scenario and just continue if that is the case,
+    //or find a way to account for these before sorting all unused letters into locked letters, etc.
+
+  }
+
+  @Test
+  public void testWaffleArchiveSeven() {
+    WaffleInterface waffle = new WaffleImpl(
+            "onwigronrrtcravrtxpee", "gyyygyyeyegeyeeegeyeg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+
+    //FAILED: edge case is same as Waffle #6 basically
+
+  }
+
+  @Test
+  public void testWaffleArchiveEight() {
+    //works
+    WaffleInterface waffle = new WaffleImpl(
+            "slropamorodchtrontreh", "geyegeegyygeeeeegygeg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testWaffleArchiveNine() {
+    //works
+    WaffleInterface waffle = new WaffleImpl(
+            "tjmiloragoailnlkneaia", "geegggeyeggeyeeegeyyg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
   }
 
 }
