@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
 
   private WaffleInterface waffle;
-  private List<Letter> lettersToPlace; //might not need this actually.
+  private List<Letter> lettersToMove; //might not need this actually.
   private List<List<Posn>> positionsOfWords; //contains data of the positions of every letter in
   //every word, in order of how they are read.
 
@@ -15,9 +15,9 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
 
   public WaffleWordSolverTwo(WaffleInterface waffle) {
     this.waffle = waffle;
-    this.lettersToPlace = new ArrayList<>();
+    this.lettersToMove = new ArrayList<>();
     for (Posn p : waffle.getPositionsToShift()) {
-      lettersToPlace.add(waffle.getLetterAt(p));
+      lettersToMove.add(waffle.getLetterAt(p));
     }
 
     this.positionsOfWords = new ArrayList<>();
@@ -74,10 +74,6 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
 
   @Override
   public WaffleInterface solveWaffle() {
-    List<Letter> lettersToMove = new ArrayList<>();
-    for (Posn p : waffle.getPositionsToShift()) {
-      lettersToMove.add(waffle.getLetterAt(p));
-    }
     fillWord(0, lettersToMove, new WaffleImpl(waffle));
     return null;
   }
@@ -87,7 +83,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
   //fills the given five letter word sequence with valid letters, and returns whether or not the
   //word was filled.
   private void fillWord(int wordNumber, List<Letter> lettersUnused, WaffleImpl waffleCopy) {
-
+    System.out.println("WORD NUMBER: " + wordNumber);
     if (wordNumber == 6) {
       this.solution = waffleCopy;
     } else {
@@ -209,6 +205,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
       }
 
       //for debugging
+      /*
       System.out.print("Permutation: ");
       for (Optional<Letter> letterOrEmpty : permutationToBuild) {
         if (letterOrEmpty.isPresent()) {
@@ -217,7 +214,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
           System.out.print("Empty ");
         }
       }
-      System.out.println();
+      System.out.println();*/
 
       //generate sniper permutations based on the chosen permutation
       generateYellowSniperPermutations(wordNumber, waffleCopy, lockedLetters, sniperLetters, sniperSpots, sniperUsed, new ArrayList<>(),
@@ -288,6 +285,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
       //move on to next step
 
       //debugging
+      /*
       System.out.print("Sniper permutation: ");
       for (Optional<Letter> letterOrEmpty : permutationToBuild) {
         if (letterOrEmpty.isPresent()) {
@@ -296,7 +294,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
           System.out.print("Empty ");
         }
       }
-      System.out.println();
+      System.out.println();*/
 
       //prepare for next step
       int emptyCount = 0;
@@ -390,6 +388,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
     if (index == permutationToBuild.size()) {
       //move to next step
 
+      /*
       System.out.print("Grey/Iffy Permutation: ");
       for (Optional<Letter> letterOrEmpty : permutationToBuild) {
         if (letterOrEmpty.isPresent()) {
@@ -398,10 +397,14 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
           System.out.print("Empty ");
         }
       }
-      System.out.println();
+      System.out.println();*/
 
       //modifies data in the waffle copy and builds the word / verifies it is a valid word
-      buildWordFromPermutation(permutationToBuild, allMovablePosns, wordNumber, waffleCopy);
+      buildWordFromPermutation(
+              //filters out all the empty objects of locked letters
+              lockedLetters.stream().filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList()),
+              sniperLetters, greyAndIffyLetters,
+              permutationToBuild, allMovablePosns, wordNumber, waffleCopy);
 
 
     } else {
@@ -429,9 +432,14 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
     }
   }
 
-  private void buildWordFromPermutation(List<Optional<Letter>> permutationToBuild,
-                                        List<Posn> allMovablePositions,
-                                        int wordNumber, WaffleImpl waffleCopy) {
+  private void buildWordFromPermutation(
+          List<Letter> lockedLetters, List<Letter> sniperLetters, List<Letter> greyAndIffyLetters,
+          List<Optional<Letter>> permutationToBuild,
+          List<Posn> allMovablePositions,
+          int wordNumber, WaffleImpl waffleCopy) {
+
+    //go through every letter in the permutation and replace letters in the waffle copy with the
+    //new chosen letters.
     for (int i = 0; i < permutationToBuild.size(); i++) {
       if (permutationToBuild.get(i).isEmpty()) {
         throw new IllegalStateException("Permutation cannot have any empty slots at this stage");
@@ -440,18 +448,47 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
         waffleCopy.replaceLetter(allMovablePositions.get(i), letterAt);
       }
     }
+
+    //create the word from the select positions
     List<Posn> wordPosns = positionsOfWords.get(wordNumber);
     List<Letter> wordLetters = new ArrayList<>();
     for (Posn p : wordPosns) {
       wordLetters.add(waffleCopy.getLetterAt(p));
     }
+
+    //validate the word, and recursively call fillWord
     if (WordValidator.isValidWord(wordLetters)) {
+      //for debugging
       System.out.println("Valid word: ");
       for (Letter l : wordLetters) {
         System.out.print(l + " ");
       }
+      System.out.println();
       //recursively call fill word
+      //TODO: remove letters that are already used from the list of used letters, and call
+      //  fillWord recursively, incrementing the wordNumber by 1.
+
+      prepareToFillNextWord(lockedLetters, sniperLetters, greyAndIffyLetters, wordNumber, new WaffleImpl(waffleCopy));
     }
+  }
+
+  private void prepareToFillNextWord(List<Letter> lockedLetters, List<Letter> sniperLetters, List<Letter> greyAndIffyLetters,
+                                     int wordNumber, WaffleImpl waffleCopy) {
+    List<Letter> allLettersToMove = new ArrayList<>();
+    allLettersToMove.addAll(lockedLetters);
+    allLettersToMove.addAll(sniperLetters);
+    allLettersToMove.addAll(greyAndIffyLetters);
+
+    //remove all used letters from the list
+    //turn all the letters green in the word
+    for (Posn p : positionsOfWords.get(wordNumber)) {
+      Letter oldLetterAt = waffleCopy.getLetterAt(p);
+      allLettersToMove.remove(oldLetterAt);
+      Letter newLetter = new Letter(oldLetterAt.getLetter(), LetterState.GREEN, p);
+      waffleCopy.replaceLetter(p, newLetter);
+    }
+
+    fillWord(wordNumber + 1, allLettersToMove, waffleCopy);
   }
 
 
