@@ -214,4 +214,31 @@ public class WaffleTests {
     waffleSolver.solveWaffle();
   }
 
+  @Test
+  public void testWaffleArchiveOne() {
+
+    //THIS HAS A SPECIAL EDGE CASE OF TWO E'S TURNING YELLOW AND VYING FOR THE SAME SPOT
+
+    WaffleInterface waffle = new WaffleImpl(
+            "fbouegiulsoomgeloemna", "geeggeeegygyyeyegyyeg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testWaffleArchiveTwo() {
+    WaffleInterface waffle = new WaffleImpl(
+            "scgolnndindeeriuffare", "geeeggeyyggeyeyegeyyg"
+    );
+
+    //ALSO HAS A SPECIAL EDGE CASE
+
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+
+  }
+
 }

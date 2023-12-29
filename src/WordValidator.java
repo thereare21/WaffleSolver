@@ -10,6 +10,8 @@ public class WordValidator {
     String word = letterList.stream().map(letter -> letter.getLetter()).map(String::valueOf)
             .collect(Collectors.joining());
 
+
+
     String filePath = "/Users/raymondtsai/Documents/JavaProjects/WaffleSolver/src/AllFiveLetterWords.txt";
 
     // Read and check each word from the file
@@ -19,6 +21,7 @@ public class WordValidator {
         // Assuming each line in the file contains a valid word
 
         if (line.trim().equals(word)) {
+          System.out.println("Found Word: " + word);
           return true;
         }
       }
