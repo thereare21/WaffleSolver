@@ -1,9 +1,6 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -287,6 +284,8 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
                                                 List<Posn> allMovablePositions) {
     if (index == sniperLetters.size()) {
       //move on to next step
+
+      //debugging
       System.out.print("Sniper permutation: ");
       for (Optional<Letter> letterOrEmpty : permutationToBuild) {
         if (letterOrEmpty.isPresent()) {
@@ -296,6 +295,26 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
         }
       }
       System.out.println();
+
+      //prepare for next step
+      int emptyCount = 0;
+      for (Optional<Letter> letterOrEmpty : permutationToBuild) {
+        if (letterOrEmpty.isEmpty()) {
+          emptyCount++;
+        }
+      }
+      List<Boolean> usedGreyIffy = new ArrayList<>();
+      for (int i = 0; i < greyAndIffyLetters.size(); i++) {
+        usedGreyIffy.add(false);
+      }
+
+      //call next step
+
+
+      generateGreyAndIffyPermutations(lockedLetters, sniperLetters, greyAndIffyLetters,
+              usedGreyIffy, permutationToBuild,
+              emptyCount, 0, allMovablePositions);
+
     } else {
       //Letter curSniper = sniperLetters.get(index);
       //if (wordPosns.get(1).getY() - wordPosns.get(0).getY() == 1)
@@ -354,6 +373,51 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
           }
         }
       }
+    }
+  }
+
+  private void generateGreyAndIffyPermutations(List<Optional<Letter>> lockedLetters,
+                                               List<Letter> sniperLetters,
+                                               List<Letter> greyAndIffyLetters,
+                                               List<Boolean> usedGreyIffy,
+                                               List<Optional<Letter>> permutationToBuild,
+                                               int emptyCount,
+                                               int index,
+                                               List<Posn> allMovablePosns) {
+    if (index == permutationToBuild.size()) {
+      //move to next step
+
+      System.out.print("Grey/Iffy Permutation: ");
+      for (Optional<Letter> letterOrEmpty : permutationToBuild) {
+        if (letterOrEmpty.isPresent()) {
+          System.out.print(letterOrEmpty.get() + " ");
+        } else {
+          System.out.print("Empty ");
+        }
+      }
+      System.out.println();
+    } else {
+      if (permutationToBuild.get(index).isEmpty()) {
+        for (int i = 0; i < greyAndIffyLetters.size(); i++) {
+          Letter chosenGreyIffy = greyAndIffyLetters.get(i);
+          if (!usedGreyIffy.get(i)) {
+            usedGreyIffy.set(i, true);
+            Optional<Letter> oldLetterOrEmpty = permutationToBuild.get(index);
+            permutationToBuild.set(index, Optional.of(chosenGreyIffy));
+
+            generateGreyAndIffyPermutations(lockedLetters, sniperLetters,
+                    greyAndIffyLetters, usedGreyIffy, permutationToBuild, emptyCount, index + 1, allMovablePosns);
+
+            //backtrack
+            usedGreyIffy.set(i, false);
+            permutationToBuild.set(index, oldLetterOrEmpty);
+          }
+        }
+      } else {
+        generateGreyAndIffyPermutations(lockedLetters, sniperLetters,
+                greyAndIffyLetters, usedGreyIffy, permutationToBuild, emptyCount, index + 1, allMovablePosns);
+      }
+
     }
   }
 
