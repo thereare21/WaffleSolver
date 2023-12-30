@@ -235,11 +235,10 @@ public class WaffleTests {
 
   @Test
   public void testWaffleArchiveTwo() {
+    //works
     WaffleInterface waffle = new WaffleImpl(
             "scgolnndindeeriuffare", "geeeggeyyggeyeyegeyyg"
     );
-
-    //ALSO HAS A SPECIAL EDGE CASE *NEVERMIND
 
     System.out.println(waffle);
     WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
@@ -263,7 +262,6 @@ public class WaffleTests {
 
     //Would need to find a way to either detect this scenario and just continue if that is the case,
     //or find a way to account for these before sorting all unused letters into locked letters, etc.
-
   }
 
   @Test
@@ -295,6 +293,17 @@ public class WaffleTests {
     //works
     WaffleInterface waffle = new WaffleImpl(
             "tjmiloragoailnlkneaia", "geegggeyeggeyeeegeyyg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testWaffleArchiveTen() {
+    //works
+    WaffleInterface waffle = new WaffleImpl(
+            "bnebkneavlidllnvemalt", "gyyegeeeyggeyyeegeyeg"
     );
     System.out.println(waffle);
     WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
