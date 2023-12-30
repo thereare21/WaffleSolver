@@ -108,9 +108,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
       System.out.println("SOLUTION");
       System.out.println(solution);
 
-      //TODO consider having a boolean instance variable and a helper method that checks this variable.
-      // if the variable is true, it will terminate all other branches of recursion.
-      this.solutionIsFound = true;
+      this.solutionIsFound = true; //terminate all other branches of recursion once solution is found
 
     } else {
 
@@ -161,7 +159,7 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
             sniperSpots.add(sniperSpot);
           }
           //else if it is a yellow letter, and it appears in one of the green spots, it is the niche
-          //scneario where the iffy letter becomes a locked letter.
+          //scenario where the iffy letter becomes a locked letter.
           else if (positionsOfWords.get(wordNumber).contains(letter.getPosition())) {
             lockedLetters.add(Optional.of(letter));
           }
@@ -175,6 +173,13 @@ public class WaffleWordSolverTwo implements WaffleWordSolverInterface {
       //TODO: deal with the edge case where a yellow letter can appear in the space of a green letter
       //  as a result of an iffy yellow letter being solved along one word, but that letter wasn't used.
       //  This means the iffy letter becomes a locked letter, and it must appear along the horizontal.
+
+      //this occurs when two or more iffy letters went unused in their respective words, and are
+      // forced to be used in the same word. If this happens, do not generate permutations, as it
+      // is invalid.
+      if (lockedLetters.size() > allMovablePositions.size()) {
+        return;
+      }
 
 
       //fill out locked letters with optional empties until it is the same size as allMovablePositions
