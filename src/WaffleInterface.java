@@ -30,4 +30,11 @@ public interface WaffleInterface {
    * @return - a list of valid placement positions the letter can go in.
    */
   List<Posn> getValidPlacementsOfLetter(Letter letter);
+
+  /**
+   * Sets the letter at the given position with the given letter
+   * @param pos - the position to set
+   * @param newLetter - the new letter
+   */
+  void setLetter(Posn pos, Letter newLetter);
 }

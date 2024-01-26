@@ -310,4 +310,32 @@ public class WaffleTests {
     waffleSolver.solveWaffle();
   }
 
+  @Test
+  public void testWaffle717() {
+    //works
+    WaffleInterface waffle = new WaffleImpl(
+            "lliknelenseuaigttshay", "geyygeyeeygyyyeggeeyg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testWaffle697() {
+    //works
+    WaffleInterface waffle = new WaffleImpl(
+            "ardatpentiomhlebtjrre", "geyygeyeeygyeyeggeegg"
+    );
+    System.out.println(waffle);
+    WaffleWordSolverInterface waffleSolver = new WaffleWordSolverTwo(waffle);
+    waffleSolver.solveWaffle();
+  }
+
+  @Test
+  public void testWaffle691() {
+
+  }
+
 }
+

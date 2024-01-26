@@ -74,6 +74,13 @@ public class WaffleImpl implements WaffleInterface {
     }
   }
 
+  /**
+   * Initializes an empty Waffle game, will be filled in by the replaceLetter method
+   */
+  public WaffleImpl() {
+    this.letterMap = new HashMap<>();
+  }
+
   public WaffleImpl(WaffleInterface other) {
     if (other == null) {
       throw new IllegalArgumentException("Object to copy is null");
@@ -127,6 +134,11 @@ public class WaffleImpl implements WaffleInterface {
     if (letterMap.get(pos) == null) {
       throw new IllegalArgumentException("No letter at the given position");
     }
+    letterMap.put(pos, newLetter);
+  }
+
+  @Override
+  public void setLetter(Posn pos, Letter newLetter) {
     letterMap.put(pos, newLetter);
   }
 
